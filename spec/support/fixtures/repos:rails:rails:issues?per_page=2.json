@@ -1,0 +1,90 @@
+[
+  {
+    "url": "https://api.github.com/repos/rails/rails/issues/18298",
+    "labels_url": "https://api.github.com/repos/rails/rails/issues/18298/labels{/name}",
+    "comments_url": "https://api.github.com/repos/rails/rails/issues/18298/comments",
+    "events_url": "https://api.github.com/repos/rails/rails/issues/18298/events",
+    "html_url": "https://github.com/rails/rails/pull/18298",
+    "id": 53250601,
+    "number": 18298,
+    "title": "Integration requests should work in contexts without setup and teardown",
+    "user": {
+      "login": "brainopia",
+      "id": 386,
+      "avatar_url": "https://avatars.githubusercontent.com/u/386?v=3",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/brainopia",
+      "html_url": "https://github.com/brainopia",
+      "followers_url": "https://api.github.com/users/brainopia/followers",
+      "following_url": "https://api.github.com/users/brainopia/following{/other_user}",
+      "gists_url": "https://api.github.com/users/brainopia/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/brainopia/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/brainopia/subscriptions",
+      "organizations_url": "https://api.github.com/users/brainopia/orgs",
+      "repos_url": "https://api.github.com/users/brainopia/repos",
+      "events_url": "https://api.github.com/users/brainopia/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/brainopia/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2015-01-02T12:36:50Z",
+    "updated_at": "2015-01-02T12:45:12Z",
+    "closed_at": null,
+    "pull_request": {
+      "url": "https://api.github.com/repos/rails/rails/pulls/18298",
+      "html_url": "https://github.com/rails/rails/pull/18298",
+      "diff_url": "https://github.com/rails/rails/pull/18298.diff",
+      "patch_url": "https://github.com/rails/rails/pull/18298.patch"
+    },
+    "body": "Fix #18285 \r\n\r\nIn rails 4.2.0 integration requests work only if are called inside setup-teardown cycle (for view-related assertions). But these methods (e.g, `#get`, `#post`) can be useful outside of current test to setup a context (cookies, session) for all requests, e.g., to use inside `before(:all)` with rspec."
+  },
+  {
+    "url": "https://api.github.com/repos/rails/rails/issues/18297",
+    "labels_url": "https://api.github.com/repos/rails/rails/issues/18297/labels{/name}",
+    "comments_url": "https://api.github.com/repos/rails/rails/issues/18297/comments",
+    "events_url": "https://api.github.com/repos/rails/rails/issues/18297/events",
+    "html_url": "https://github.com/rails/rails/issues/18297",
+    "id": 53250483,
+    "number": 18297,
+    "title": "activerecord should set association_id attribute when using `build`",
+    "user": {
+      "login": "xpepermint",
+      "id": 174279,
+      "avatar_url": "https://avatars.githubusercontent.com/u/174279?v=3",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/xpepermint",
+      "html_url": "https://github.com/xpepermint",
+      "followers_url": "https://api.github.com/users/xpepermint/followers",
+      "following_url": "https://api.github.com/users/xpepermint/following{/other_user}",
+      "gists_url": "https://api.github.com/users/xpepermint/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/xpepermint/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/xpepermint/subscriptions",
+      "organizations_url": "https://api.github.com/users/xpepermint/orgs",
+      "repos_url": "https://api.github.com/users/xpepermint/repos",
+      "events_url": "https://api.github.com/users/xpepermint/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/xpepermint/received_events",
+      "type": "User",
+      "site_admin": false
+    },
+    "labels": [
+
+    ],
+    "state": "open",
+    "locked": false,
+    "assignee": null,
+    "milestone": null,
+    "comments": 0,
+    "created_at": "2015-01-02T12:33:43Z",
+    "updated_at": "2015-01-02T12:34:17Z",
+    "closed_at": null,
+    "body": "I have two models (`rails 4.2`)\r\n\r\n``` ruby\r\nclass Project < ActiveRecord::Base\r\n  has_many :memberships\r\nend\r\n\r\nclass Membership < ActiveRecord::Base\r\n  belongs_to :user\r\n  belongs_to :project\r\n  validates :user_id, :project_id, presence: true\r\nend\r\n```\r\n\r\nIn the example bellow the `save` method fails because `project_id` is not set but I validate its presence in the `Membership` model.\r\n``` ruby\r\n@project = Project.new(project_params)\r\n@project.memberships.build(user_id: current_user.id, role: 'owner')\r\nif @project.save\r\n   redirect_to projects_path\r\nelse\r\n   render :new\r\nend\r\n```\r\n\r\nI have to add this\r\n``` ruby\r\ndef project=(p)\r\n    self.project_id = p.id if p\r\n    super(p)\r\nend\r\n```\r\ninside `Membership` model to fix this.\r\n\r\nI think that his should be treated as a bug. I would expect that if I set association's object then also the {association}_id would be set."
+  }
+]
