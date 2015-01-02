@@ -13,7 +13,11 @@ module Crib
     # @param sawyer_options [Hash] options for Sawyer
     # @param block [Block] block for Sawyer
     def initialize(endpoint, sawyer_options = {}, block = nil)
-      @_agent = Sawyer::Agent.new(endpoint, sawyer_options, &block)
+      @_agent = Sawyer::Agent.new(
+        endpoint,
+        sawyer_options.merge(links_parser: Sawyer::LinkParsers::Simple.new),
+        &block
+      )
     end
 
     private
