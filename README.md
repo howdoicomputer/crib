@@ -1,4 +1,4 @@
-# Crib [![Build Status](https://travis-ci.org/rafalchmiel/crib.svg?branch=master)](https://travis-ci.org/rafalchmiel/crib)
+# Crib [![Build Status](https://travis-ci.org/rafalchmiel/crib.svg?branch=master)](https://travis-ci.org/rafalchmiel/crib) [![Coverage Status](https://coveralls.io/repos/rafalchmiel/crib/badge.svg)](https://coveralls.io/r/rafalchmiel/crib)
 **Crib** allows you to dynamically explore most REST APIs using an intuitive syntax that resembles a HTTP URI path. It uses [Sawyer](https://github.com/lostisland/sawyer) under the hood so things like authentication and passing certain headers to every request are simple.
 
 In the below example, we are using the Dribbble API to [get the name of the currently authenticated user](http://developer.dribbble.com/v1/users/#get-the-authenticated-user), then just a single user in order to demonstrate arguments:
