@@ -1,4 +1,4 @@
-# Crib
+# Crib [![Build Status](https://travis-ci.org/rafalchmiel/crib.svg?branch=master)](https://travis-ci.org/rafalchmiel/crib)
 **Crib** allows you to dynamically explore most REST APIs using an intuitive syntax that resembles a HTTP URI path. It uses [Sawyer](https://github.com/lostisland/sawyer) under the hood so things like authentication and passing certain headers to every request are simple.
 
 In the below example, we are using the Dribbble API to [get the name of the currently authenticated user](http://developer.dribbble.com/v1/users/#get-the-authenticated-user), then just a single user in order to demonstrate arguments:
@@ -138,6 +138,18 @@ followers.first.follower.name
 ```
 
 When processing API responses, all `*_url` attributes are culled in to the link relations collection. Any `url` attribute becomes `.rels[:self]`.
+
+## Supported Ruby Versions
+**Crib** aims to support and is [tested against](https://travis-ci.org/rafalchmiel/crib) the following Ruby implementations:
+
+  - 2.2.0
+  - 2.1.5
+  - 2.0.0-p598
+  - 1.9.3-p551
+
+If something doesn't work on one of these Ruby versions, it's a bug. **Crib** may inadvertently work (or seem to work) on other Ruby implementations, however support will only be provided for the versions listed above.
+
+If you would like **Crib** to support another Ruby version, you may volunteer to be a maintainer. Being a maintainer entails making sure all tests run and pass on that implementation. When something breaks on your implementation, you will be responsible for providing patches in a timely fashion. If critical issues for a particular implementation exist at the time of a major release, support for that Ruby version may be dropped.
 
 ## Development
 If you want to hack on **Crib** locally, we try to make [bootstrapping the project](http://wynnnetherland.com/linked/2013012801/bootstrapping-consistency) as painless as possible. Just clone and run:
