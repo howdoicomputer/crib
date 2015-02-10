@@ -2,7 +2,7 @@ module Crib
   # Handles the construction and execution of requests
   class Request
     # Header keys that can be passed in options hash to {#_get},{#_head}
-    CONVENIENCE_HEADERS = %i(accept content_type)
+    CONVENIENCE_HEADERS = Set.new([:accept, :content_type])
 
     def initialize(api, uri = '')
       @api, @uri = api, uri
