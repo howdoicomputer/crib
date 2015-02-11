@@ -22,7 +22,7 @@ module Crib
 
     private
 
-    def method_missing(method_name, *args, &block)
+    def method_missing(method_name, *args)
       Request.new(self, Helpers.construct_uri(method_name, args))
     end
   end

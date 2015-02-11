@@ -80,15 +80,14 @@ module Crib
           headers[h] = header
         end
       end
-      query = options.delete(:query)
-      opts = { query: options }
+      query, opts = options.delete(:query), { query: options }
       opts[:query].merge!(query) if query && query.is_a?(Hash)
       opts[:headers] = headers unless headers.empty?
 
       opts
     end
 
-    def method_missing(method_name, *args, &block)
+    def method_missing(method_name, *args)
       Request.new(api, Helpers.construct_uri(@uri, method_name, args))
     end
   end
