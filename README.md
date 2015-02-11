@@ -30,6 +30,12 @@ Install the latest stable version of **Crib** via RubyGems:
 $ gem install crib
 ```
 
+Alternatively add it to your `Gemfile` and run `bundle install`:
+
+```ruby
+gem 'crib'
+```
+
 ### Defining an API
 In order to define a REST API in **Crib**, you use the `Crib.api` method, passing it the endpoint, any optional Sawyer options, and an optional block for Sawyer to yield connection options to.
 
