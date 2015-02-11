@@ -1,0 +1,10 @@
+AllCops:
+  Exclude:
+    - 'crib.gemspec'
+
+Documentation:
+  Enabled: false
+AssignmentInCondition:
+  Enabled: false
+NumericLiterals:
+  Enabled: false
