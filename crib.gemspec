@@ -5,7 +5,7 @@ require 'crib/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'crib'
-  spec.version       = Crib::VERSION
+  spec.version       = Crib::VERSION.dup
   spec.authors       = ['Rafal Chmiel']
   spec.email         = ['rafalmarekchmiel@gmail.com']
   spec.summary       = 'A dynamic way of quickly exploring REST APIs.'
@@ -18,15 +18,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'sawyer'
+  spec.required_ruby_version = '>= 1.9.3'
 
+  spec.add_runtime_dependency 'sawyer', '~> 0.6'
   spec.add_development_dependency 'bundler', '~> 1.6'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'webmock'
-  spec.add_development_dependency 'simplecov'
-  spec.add_development_dependency 'coveralls'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'sinatra'
 end
