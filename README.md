@@ -4,7 +4,7 @@
 In the below example, we are using the Dribbble API to [get the name of the currently authenticated user](http://developer.dribbble.com/v1/users/#get-the-authenticated-user), then just a single user in order to demonstrate arguments:
 
 ```ruby
-dribbble = Crib.api('https://api.dribbble.com/v1') do |http|
+dribbble = Crib::API.new('https://api.dribbble.com/v1') do |http|
   http.authorization 'Bearer', '1aea05cfdbb92294be2fcf63ee11b412fd88c65051bd3144302c30ae8ba18896'
 end
 
@@ -37,12 +37,12 @@ gem 'crib'
 ```
 
 ### Defining an API
-In order to define a REST API in **Crib**, you use the `Crib.api` method, passing it the endpoint, any optional Sawyer options, and an optional block for Sawyer to yield connection options to.
+In order to define a REST API in **Crib** you need to initialise a new `Crib::API` class passing it the endpoint, any optional Sawyer options, and an optional block for Sawyer to yield connection options to.
 
 As Sawyer is built on top of [Faraday](https://github.com/lostisland/faraday), the options in this block are yielded to a `Faraday::Connection` which means you can set headers, authentication stuff, and middleware like this:
 
 ```ruby
-dribbble = Crib.api('https://api.dribbble.com/v1') do |http|
+dribbble = Crib::API.new('https://api.dribbble.com/v1') do |http|
   http.headers[:user_agent] = 'crib'
   http.authorization 'Bearer', '1aea05cfdbb92294be2fcf63ee11b412fd88c65051bd3144302c30ae8ba18896'
   http.response :logger # take note of this, it logs all requests in the following examples

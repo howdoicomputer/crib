@@ -12,7 +12,7 @@ module Crib
     # @param endpoint [String] API endpoint
     # @param sawyer_options [Hash] options for Sawyer
     # @param block [Block] block for Sawyer
-    def initialize(endpoint, sawyer_options = {}, block = nil)
+    def initialize(endpoint, sawyer_options = {}, &block)
       @_agent = Sawyer::Agent.new(
         endpoint,
         sawyer_options.merge(links_parser: Sawyer::LinkParsers::Simple.new),
