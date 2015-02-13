@@ -4,6 +4,10 @@ module Crib
     # Header keys that can be passed in options hash to {#_get},{#_head}
     CONVENIENCE_HEADERS = Set.new([:accept, :content_type])
 
+    # Defines a request
+    #
+    # @param api [Crib::API] API definition
+    # @param uri [String] URI path
     def initialize(api, uri = '')
       @api, @uri = api, uri
     end
