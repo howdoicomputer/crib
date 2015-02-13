@@ -70,6 +70,13 @@ dribbble.users('rafalchmiel').followers
  # => <Crib::Request @api=#<Crib::API @_agent=<Sawyer::Agent https://api.dribbble.com/v1>, @_last_response=#<Sawyer::Response 200 @rels={} @data={...}>, @uri="users/rafalchmiel/followers">
 ```
 
+Alternatively you can use `#send` passing it a String containing a path. For example the above can be written as:
+
+```ruby
+dribbble.send('users/rafalchmiel/followers')
+ # => <Crib::Request @api=#<Crib::API @_agent=<Sawyer::Agent https://api.dribbble.com/v1>, @_last_response=#<Sawyer::Response 200 @rels={} @data={...}>, @uri="users/rafalchmiel/followers">
+```
+
 ### Consuming Resources
 So far we have only *constructed* a request. It's time to execute the request with a HTTP verb of your choice. You can call any of the HTTP verbs (prefixed with an underscore to keep the namespace unpoluted) on any `Crib::Request` instance you constructed. All these HTTP verb methods take an optional parameter and header Hash also (pass parameters in `:query` Hash and headers in `:headers` Hash). For example:
 
