@@ -17,7 +17,7 @@ dan._get.name
  # => "Dan Cederholm"
 ```
 
-If you're interested in building a REST API client (otherwise known as *API wrapper*) you can use the `Crib::DSL` class. Here's an interesting example of this functionality demonstrated using the [GitHub API](https://developer.github.com/v3/):
+If you're interested in building a REST API client you can use the `Crib::DSL` class. Here's an interesting example of this functionality demonstrated using the [GitHub API](https://developer.github.com/v3/):
 
 ```ruby
 class GitHub < Crib::DSL
