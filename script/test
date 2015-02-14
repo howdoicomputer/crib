@@ -8,5 +8,9 @@ script/bootstrap --quiet
 echo "===> Running specs..."
 bundle exec rspec
 
-echo "===> Running code analysis..."
-bundle exec rubocop -f simple
+if [ "$1" = "--skip-rubocop" ]; then
+  echo "===> Skipping code analysis..."
+else
+  echo "===> Running code analysis..."
+  bundle exec rubocop -f simple
+fi
