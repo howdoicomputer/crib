@@ -21,7 +21,7 @@ dan._get.name
 The aim of this project is to be able to explore most REST APIs using a straightforward syntax. **Crib** uses Sawyer to simplify requests and easily read responses, which means there's no need to overcomplicate response handling and middleware.
 
 ### Inspiration
-**Crib** takes a lot of its inspiration from [Blanket](https://github.com/inf0rmer/blanket). The aim of this project is not to compete with Blanket, but to produce a very different flavour of it. In terms of documentation and API, [Octokit](https://github.com/octokit/octokit.rb) was the inspiration for both.
+**Crib** takes a lot of its inspiration from [Blanket](https://github.com/inf0rmer/blanket). The aim of this project is not to compete with Blanket, but to produce a very different flavour of it. Some parts of the documentation and code are borrowed from [Octokit](https://github.com/octokit/octokit.rb) and [Resource Kit](https://github.com/digitalocean/resource_kit).
 
 ## Quick Start
 Install the latest stable version of **Crib** via RubyGems:
