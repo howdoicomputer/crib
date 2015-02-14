@@ -4,8 +4,6 @@
 In the below example, we are using the Dribbble API to [get the name of the currently authenticated user](http://developer.dribbble.com/v1/users/#get-the-authenticated-user), then just a single user in order to demonstrate arguments:
 
 ```ruby
-require 'crib'
-
 dribbble = Crib::API.new('https://api.dribbble.com/v1') do |http|
   http.authorization 'Bearer', '1aea05cfdbb92294be2fcf63ee11b412fd88c65051bd3144302c30ae8ba18896'
 end
@@ -22,8 +20,6 @@ dan._get.name
 If you're interested in building a REST API client (otherwise known as *API wrapper*) you can use the `Crib::DSL` class. Here's an interesting example of this functionality demonstrated using the [GitHub API](https://developer.github.com/v3/):
 
 ```ruby
-require 'crib/dsl'
-
 class GitHub < Crib::DSL
   define 'https://api.github.com' do |http|
     http.headers[:user_agent] = 'crib'
@@ -66,6 +62,12 @@ Alternatively add it to your `Gemfile` and run `bundle install`:
 
 ```ruby
 gem 'crib'
+```
+
+At the top of your code, require the library:
+
+```ruby
+require 'crib'
 ```
 
 ### Defining an API
