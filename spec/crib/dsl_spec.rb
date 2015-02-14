@@ -1,5 +1,3 @@
-require 'crib/dsl'
-
 describe Crib::DSL do
   let(:client) do
     class Client < Crib::DSL
