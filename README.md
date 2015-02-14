@@ -200,7 +200,7 @@ last_response.headers[:last_modified]
 When using the DSL, you can access the most recent response using `#last_response`:
 
 ```ruby
-class Dribbble < Crib::API
+class Dribbble < Crib::DSL
   # ...
 end
 
