@@ -1,9 +1,11 @@
 # Crib [![Build Status](https://travis-ci.org/rafalchmiel/crib.svg?branch=master)](https://travis-ci.org/rafalchmiel/crib) [![Coverage Status](https://coveralls.io/repos/rafalchmiel/crib/badge.svg)](https://coveralls.io/r/rafalchmiel/crib) [![Inline docs](http://inch-ci.org/github/rafalchmiel/crib.svg?branch=master)](http://inch-ci.org/github/rafalchmiel/crib) [![Code Climate](https://codeclimate.com/github/rafalchmiel/crib/badges/gpa.svg)](https://codeclimate.com/github/rafalchmiel/crib) [![Gem Version](https://badge.fury.io/rb/crib.svg)](http://badge.fury.io/rb/crib)
-**Crib** allows you to dynamically explore most REST APIs using an intuitive syntax that resembles a HTTP URI path. It uses [Sawyer](https://github.com/lostisland/sawyer) under the hood so things like authentication and passing certain headers to every request are simple.
+**Crib** allows you to dynamically explore and package most REST APIs using an intuitive syntax that resembles a HTTP URI path. It uses [Sawyer](https://github.com/lostisland/sawyer) under the hood so things like authentication and passing certain headers to every request are simple.
 
 In the below example, we are using the Dribbble API to [get the name of the currently authenticated user](http://developer.dribbble.com/v1/users/#get-the-authenticated-user), then just a single user in order to demonstrate arguments:
 
 ```ruby
+require 'crib'
+
 dribbble = Crib::API.new('https://api.dribbble.com/v1') do |http|
   http.authorization 'Bearer', '1aea05cfdbb92294be2fcf63ee11b412fd88c65051bd3144302c30ae8ba18896'
 end
@@ -17,8 +19,38 @@ dan._get.name
  # => "Dan Cederholm"
 ```
 
+If you're interested in building a REST API client (otherwise known as *API wrapper*) you can use the `Crib::DSL` class. Here's an interesting example of this functionality demonstrated using the [GitHub API](https://developer.github.com/v3/):
+
+```ruby
+require 'crib/dsl'
+
+class GitHub < Crib::DSL
+  define 'https://api.github.com' do |http|
+    http.headers[:user_agent] = 'crib'
+  end
+
+  action :user do |user|
+    api.users(user)._get
+  end
+
+  action :issues do |repo, options = {}|
+    api.repos(*repo.split('/')).issues._get(options)
+  end
+end
+
+github = GitHub.new
+
+me = github.user('rafalchmiel')
+me.name
+ # => "Rafal Chmiel"
+
+rails_issues = github.issues('rails/rails', per_page: 2)
+rails_issues.count
+ # => 2
+```
+
 ## Philosophy
-The aim of this project is to be able to explore most REST APIs using a straightforward syntax. **Crib** uses Sawyer to simplify requests and easily read responses, which means there's no need to overcomplicate response handling and middleware.
+The aim of this project is to be able to explore and package most REST APIs using a straightforward syntax and an intuitive DSL. **Crib** uses Sawyer to simplify requests and easily read responses, which means there's no need to overcomplicate response handling and middleware.
 
 ### Inspiration
 **Crib** takes a lot of its inspiration from [Blanket](https://github.com/inf0rmer/blanket). The aim of this project is not to compete with Blanket, but to produce a very different flavour of it. Some parts of the documentation and code are borrowed from [Octokit](https://github.com/octokit/octokit.rb) and [Resource Kit](https://github.com/digitalocean/resource_kit).
@@ -61,6 +93,20 @@ dribbble.users('simplebits')._get.id
  # => 1
 ```
 
+Defining an API using the DSL is almost the same: just replace `Crib::API.new` with `define` (the definition will be accessible via `#api`):
+
+```ruby
+class Dribbble < Crib::DSL
+  define 'https://api.dribbble.com/v1' do |http|
+    http.headers[:user_agent] = 'crib'
+    http.authorization 'Bearer', '1aea05cfdbb92294be2fcf63ee11b412fd88c65051bd3144302c30ae8ba18896'
+    http.response :logger
+  end
+
+  # ...
+end
+```
+
 ### Constructing Requests
 **Crib** uses `#method_missing` for `Crib::API` and `Crib::Request` instances. This means when you call, for example, `#users('rafalchmiel')` on your API a new instance of `Crib::Request` is created and returned (with the private instance variable `@uri` set to `"users/rafalchmiel"`). This allows you to chain methods together, because these new instances create new instances of their own class, each time joining together their URIs. For example:
 
@@ -75,6 +121,18 @@ Alternatively you can use `#send` passing it a String containing a path. For exa
 ```ruby
 dribbble.send('users/rafalchmiel/followers')
  # => <Crib::Request @api=#<Crib::API @_agent=<Sawyer::Agent https://api.dribbble.com/v1>, @_last_response=#<Sawyer::Response 200 @rels={} @data={...}>, @uri="users/rafalchmiel/followers">
+```
+
+Constructing requests when using the DSL is exactly the same. After you defined your API, your instance of `Crib::API` will be stored in the class that inherits `Crib::DSL`. You can get that instance using `#api`:
+
+```ruby
+class Dribbble < Crib::DSL
+  # ...
+
+  action :user do
+    api.user._get # currently authenticated user
+  end
+end
 ```
 
 ### Consuming Resources
@@ -111,6 +169,22 @@ me.rels[:followers].href
 
 *Note:* URL fields are culled into a separate `.rels` collection for easier [Hypermedia](#hypermedia-agent) support.
 
+Consuming requests is similar when using the DSL. You define *actions* which have a name and a block. They are then created as instance methods of the class that inherited `Crib::DSL`. When creating actions you should keep in mind ways in which you can shorten the HTTP path-like syntax as much as possible. A great example of this can be presented using this example (*taken from one of the above examples*):
+
+```ruby
+class GitHub < Crib::DSL
+  # ...
+
+  action :issues do |repo, options = {}|
+    api.repos(*repo.split('/')).issues._get(options)
+  end
+end
+
+github = GitHub.new
+github.issues('rails/rails', per_page: 2)
+ # => ...
+```
+
 #### Accessing HTTP Responses
 While all HTTP verb methods (`#_get`, `#_post`, etc.) return a `Sawyer::Resource` object, sometimes you may need access to the raw HTTP response headers. You can access the last HTTP response like this:
 
@@ -119,6 +193,21 @@ last_response = dribbble._last_response
  # => #<Sawyer::Response 200 @rels={} @data={:id=>97203 (...)}>
 last_response.headers[:last_modified]
  # => "Fri, 02 Jan 2015 14:35:08 GMT"
+```
+
+When using the DSL, you can access the most recent response using `#last_response`:
+
+```ruby
+class Dribbble < Crib::API
+  # ...
+end
+
+dribbble = Dribbble.new
+dribbble.user
+ # => ...
+
+dribbble.last_response
+ # => #<Sawyer::Response 200 @rels={} @data={:id=>97203 (...)}>
 ```
 
 #### Hypermedia Agent
