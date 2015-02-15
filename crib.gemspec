@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Crib::VERSION.dup
   spec.authors       = ['Rafal Chmiel']
   spec.email         = ['rafalmarekchmiel@gmail.com']
-  spec.summary       = 'A dynamic way of quickly exploring REST APIs.'
+  spec.summary       = 'A dynamic way of exploring and packaging REST APIs.'
   spec.description   = spec.summary
   spec.homepage      = 'https://github.com/rafalchmiel/crib'
   spec.license       = 'MIT'
