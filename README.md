@@ -17,10 +17,10 @@ dan._get.name
  # => "Dan Cederholm"
 ```
 
-If you're interested in building a REST API client you can use the `Crib::DSL` class. Here's an interesting example of this functionality demonstrated using the [GitHub API](https://developer.github.com/v3/):
+If you're interested in building a REST API client you can use the `Crib::Resource` class which provides a DSL. Here's an interesting example of this functionality demonstrated using the [GitHub API](https://developer.github.com/v3/):
 
 ```ruby
-class GitHub < Crib::DSL
+class GitHub < Crib::Resource
   define 'https://api.github.com' do |http|
     http.headers[:user_agent] = 'crib'
   end
@@ -98,7 +98,7 @@ dribbble.users('simplebits')._get.id
 Defining an API using the DSL is almost the same: just replace `Crib::API.new` with `define` (the definition will be accessible via `#api`):
 
 ```ruby
-class Dribbble < Crib::DSL
+class Dribbble < Crib::Resource
   define 'https://api.dribbble.com/v1' do |http|
     http.headers[:user_agent] = 'crib'
     http.authorization 'Bearer', '1aea05cfdbb92294be2fcf63ee11b412fd88c65051bd3144302c30ae8ba18896'
@@ -125,10 +125,10 @@ dribbble.send('users/rafalchmiel/followers')
  # => <Crib::Request @api=#<Crib::API @_agent=<Sawyer::Agent https://api.dribbble.com/v1>, @_last_response=#<Sawyer::Response 200 @rels={} @data={...}>, @uri="users/rafalchmiel/followers">
 ```
 
-Constructing requests when using the DSL is exactly the same. After you defined your API, your instance of `Crib::API` will be stored in the class that inherits `Crib::DSL`. You can get that instance using `#api`:
+Constructing requests when using the DSL is exactly the same. After you defined your API, your instance of `Crib::API` will be stored in the class that inherits `Crib::Resource`. You can get that instance using `#api`:
 
 ```ruby
-class Dribbble < Crib::DSL
+class Dribbble < Crib::Resource
   # ...
 
   action :user do
@@ -171,10 +171,10 @@ me.rels[:followers].href
 
 *Note:* URL fields are culled into a separate `.rels` collection for easier [Hypermedia](#hypermedia-agent) support.
 
-Consuming requests is similar when using the DSL. You define *actions* which have a name and a block. They are then created as instance methods of the class that inherited `Crib::DSL`. When creating actions you should keep in mind ways in which you can shorten the HTTP path-like syntax as much as possible. A great example of this can be presented using this example (*taken from one of the above examples*):
+Consuming requests is similar when using the DSL. You define *actions* which have a name and a block. They are then created as instance methods of the class that inherited `Crib::Resource`. When creating actions you should keep in mind ways in which you can shorten the HTTP path-like syntax as much as possible. A great example of this can be presented using this example (*taken from one of the above examples*):
 
 ```ruby
-class GitHub < Crib::DSL
+class GitHub < Crib::Resource
   # ...
 
   action :issues do |repo, options = {}|
@@ -185,6 +185,12 @@ end
 github = GitHub.new
 github.issues('rails/rails', per_page: 2)
  # => ...
+```
+
+If you need to, you can override the API definition set in the class with `.define` and instead pass your own, when initialising your class:
+
+```ruby
+custom_github = GitHub.new(Crib::API.new('https://api.github.dev'))
 ```
 
 #### Accessing HTTP Responses
@@ -200,7 +206,7 @@ last_response.headers[:last_modified]
 When using the DSL, you can access the most recent response using `#last_response`:
 
 ```ruby
-class Dribbble < Crib::API
+class Dribbble < Crib::Resource
   # ...
 end
 
