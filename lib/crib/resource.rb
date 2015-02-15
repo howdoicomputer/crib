@@ -1,8 +1,20 @@
 module Crib
-  # Contains DSL methods that aid API client creation
-  class DSL
+  # Defines an API resource
+  class Resource
     extend Crib::Helpers::InheritableAttribute
     inheritable_attr :_api
+
+    # When creating a new instance, the API definition can be set/overridden
+    #
+    # @param api [Crib::API] instance of API definition
+    # @example
+    #   class Client < Crib::Resource
+    #     define 'https://api.github.com'
+    #   end
+    #   Client.new(Crib::API.new('https://api.github.dev')) # overrides above
+    def initialize(api = nil)
+      self.class._api = api if api
+    end
 
     # @return [Crib::API] instance of API definition
     def api
@@ -24,7 +36,7 @@ module Crib
     #     c.headers[:user_agent] = 'crib'
     #   end
     def self.define(endpoint, sawyer_options = {}, &block)
-      self._api ||= Crib::API.new(endpoint, sawyer_options, &block)
+      self._api = Crib::API.new(endpoint, sawyer_options, &block)
       self
     end
 
