@@ -12,7 +12,6 @@ group :test do
   gem 'rspec', '~> 3.2'
   gem 'webmock', '~> 1.20'
   gem 'sinatra', '~> 1.4'
-  gem 'simplecov', require: false
 end
 
 gemspec
