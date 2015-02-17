@@ -16,10 +16,10 @@ class GitHub < Sinatra::Base
     "<p><strong>test</strong></p>\n" if params[:text] == '**test**'
   end
 
-  put('/ping') { 'true' }
-  patch('/ping') { 'true' }
-  delete('/ping') { 'true' }
-  head('/ping') { 'true' }
+  put('/ping') { 'pong' if request.body.read == 'pong' }
+  patch('/ping') { 'pong' }
+  delete('/ping') { 'pong' }
+  head('/ping') { 'pong' }
 
   private
 

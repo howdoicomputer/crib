@@ -14,7 +14,7 @@ module Crib
 
     # Make a HTTP GET request
     #
-    # @param options [Hash] Query and header params for request
+    # @param options [Hash] query and header params for request
     # @return [Sawyer::Resource]
     def _get(options = {})
       request :get, @uri, parse_query_and_convenience_headers(options)
@@ -22,31 +22,34 @@ module Crib
 
     # Make a HTTP POST request
     #
-    # @param options [Hash] Body and header params for request
+    # @param data [Object] body for request
+    # @param options [Hash] header params for request
     # @return [Sawyer::Resource]
-    def _post(options = {})
-      request :post, @uri, options
+    def _post(data = nil, options = {})
+      request :post, @uri, data, options
     end
 
     # Make a HTTP PUT request
     #
-    # @param options [Hash] Body and header params for request
+    # @param data [Object] body for request
+    # @param options [Hash] header params for request
     # @return [Sawyer::Resource]
-    def _put(options = {})
-      request :put, @uri, options
+    def _put(data = nil, options = {})
+      request :put, @uri, data, options
     end
 
     # Make a HTTP PATCH request
     #
-    # @param options [Hash] Body and header params for request
+    # @param data [Object] body for request
+    # @param options [Hash] header params for request
     # @return [Sawyer::Resource]
-    def _patch(options = {})
-      request :patch, @uri, options
+    def _patch(data = nil, options = {})
+      request :patch, @uri, data, options
     end
 
     # Make a HTTP DELETE request
     #
-    # @param options [Hash] Query and header params for request
+    # @param options [Hash] query and header params for request
     # @return [Sawyer::Resource]
     def _delete(options = {})
       request :delete, @uri, options
@@ -54,7 +57,7 @@ module Crib
 
     # Make a HTTP HEAD request
     #
-    # @param options [Hash] Query and header params for request
+    # @param options [Hash] query and header params for request
     # @return [Sawyer::Resource]
     def _head(options = {})
       request :head, @uri, parse_query_and_convenience_headers(options)

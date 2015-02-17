@@ -27,19 +27,19 @@ describe Crib::Request do
 
   describe '#_put' do
     it 'requests the URI relative to the endpoint, with PUT method' do
-      expect(request.ping._put).to eq 'true'
+      expect(request.ping._put('pong')).to eq 'pong'
     end
   end
 
   describe '#_patch' do
     it 'requests the URI relative to the endpoint, with PATCH method' do
-      expect(request.ping._patch).to eq 'true'
+      expect(request.ping._patch).to eq 'pong'
     end
   end
 
   describe '#_delete' do
     it 'requests the URI relative to the endpoint, with DELETE method' do
-      expect(request.ping._delete).to eq 'true'
+      expect(request.ping._delete).to eq 'pong'
     end
   end
 
