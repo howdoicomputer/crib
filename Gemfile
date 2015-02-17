@@ -13,7 +13,6 @@ group :test do
   gem 'webmock', '~> 1.20'
   gem 'sinatra', '~> 1.4'
   gem 'simplecov', require: false
-  gem 'codeclimate-test-reporter', require: false
 end
 
 gemspec

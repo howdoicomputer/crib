@@ -2,9 +2,6 @@ require 'simplecov'
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start
 
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
-
 require 'crib'
 
 require 'webmock/rspec'
