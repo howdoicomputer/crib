@@ -68,7 +68,9 @@ describe Crib::Request do
     before { subject.ping(10)._head(accept: 'application/vnd.fake+json') }
 
     it 'handles arguments, query parameters, and headers' do
-      expect(api._last_response.headers[:content_length]).to eq '146'
+      expect(
+        api._last_response.headers[:content_type]
+      ).to eq 'application/json'
     end
   end
 end

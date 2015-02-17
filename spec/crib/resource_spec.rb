@@ -27,10 +27,10 @@ describe Crib::Resource do
   end
 
   describe '#last_response' do
-    before { client.ping }
+    before { client.ping(10) }
 
     it 'returns the most recent request' do
-      expect(client.last_response.headers[:content_length]).to eq '473'
+      expect(client.last_response.data.params.id).to eq '10'
     end
   end
 
