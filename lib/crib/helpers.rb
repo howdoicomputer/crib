@@ -1,26 +1,32 @@
 module Crib
   # Contains useful helpers
+  #
   # @api private
   module Helpers
-    # Constructs a REST URI
+    # Constructs a REST-friendly path
     #
     # @param args [String, Integer] objects to join together
-    # @return [String]
-    def self.construct_uri(*args)
+    # @return [String] constructed path
+    # @example Construct a simple REST-friendly path
+    #   Helpers.construct_path('ping', 10)
+    #    # => "ping/10"
+    def self.construct_path(*args)
       args.flatten.compact.map(&:to_s).reject(&:empty?).join('/')
     end
 
-    # Handles inheritable attributes in classes
+    # Handles inheritable attributes in Classes
     module InheritableAttribute
-      # Defines an attribute on a class as inheritable
+      # Defines an attribute on a Class as inheritable
       #
-      # @param name [Symbol] name of attribute to define as inheritable
+      # @param name [Symbol] attribute name
+      # @example Define an attribute as inheritable
+      #   class Resource
+      #     extend Crib::Helpers::InheritableAttribute
+      #     inheritable_attr :_api
+      #   end
       def inheritable_attr(name)
         instance_eval <<-EVAL
-          def #{name}=(v)
-            @#{name} = v
-          end
-
+          def #{name}=(v); @#{name} = v; end
           def #{name}
             @#{name} ||= InheritableAttribute.inherit(self, :#{name})
           end

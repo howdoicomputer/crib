@@ -1,73 +1,73 @@
 module Crib
   # Handles the construction and execution of requests
   class Request
-    # Header keys that can be passed in options hash to {#_get},{#_head}
+    # @return [Set] passable header keys in options Hash to {#_get},{#_head}
     CONVENIENCE_HEADERS = Set.new([:accept, :content_type])
 
     # Defines a request
     #
     # @param api [Crib::API] API definition
-    # @param uri [String] URI path
-    def initialize(api, uri = '')
-      @api, @uri = api, uri
+    # @param path [String] REST path
+    def initialize(api, path = '')
+      @api, @path = api, path
     end
 
-    # Make a HTTP GET request
+    # Makes a HTTP GET request
     #
     # @param options [Hash] query and header params for request
     # @return [Sawyer::Resource]
     def _get(options = {})
-      request :get, @uri, parse_query_and_convenience_headers(options)
+      request :get, @path, parse_query_and_convenience_headers(options)
     end
 
-    # Make a HTTP POST request
+    # Makes a HTTP POST request
     #
     # @param data [Object] body for request
     # @param options [Hash] header params for request
     # @return [Sawyer::Resource]
     def _post(data = nil, options = {})
-      request :post, @uri, data, options
+      request :post, @path, data, options
     end
 
-    # Make a HTTP PUT request
+    # Makes a HTTP PUT request
     #
     # @param data [Object] body for request
     # @param options [Hash] header params for request
     # @return [Sawyer::Resource]
     def _put(data = nil, options = {})
-      request :put, @uri, data, options
+      request :put, @path, data, options
     end
 
-    # Make a HTTP PATCH request
+    # Makes a HTTP PATCH request
     #
     # @param data [Object] body for request
     # @param options [Hash] header params for request
     # @return [Sawyer::Resource]
     def _patch(data = nil, options = {})
-      request :patch, @uri, data, options
+      request :patch, @path, data, options
     end
 
-    # Make a HTTP DELETE request
+    # Makes a HTTP DELETE request
     #
     # @param options [Hash] query and header params for request
     # @return [Sawyer::Resource]
     def _delete(options = {})
-      request :delete, @uri, options
+      request :delete, @path, options
     end
 
-    # Make a HTTP HEAD request
+    # Makes a HTTP HEAD request
     #
     # @param options [Hash] query and header params for request
     # @return [Sawyer::Resource]
     def _head(options = {})
-      request :head, @uri, parse_query_and_convenience_headers(options)
+      request :head, @path, parse_query_and_convenience_headers(options)
     end
 
     private
 
-    attr_reader :api, :uri
+    attr_reader :api, :path
 
-    def request(method, uri, data, options = {})
+    def request(method, path, data, options = {})
       if data.is_a?(Hash)
         options[:query]   = data.delete(:query) || {}
         options[:headers] = data.delete(:headers) || {}
@@ -76,7 +76,7 @@ module Crib
         end
       end
 
-      @api._last_response = @api._agent.call(method, URI(uri), data, options)
+      @api._last_response = @api._agent.call(method, URI(path), data, options)
       @api._last_response.data
     end
 
@@ -95,7 +95,7 @@ module Crib
     end
 
     def method_missing(method_name, *args)
-      Request.new(api, Helpers.construct_uri(@uri, method_name, args))
+      Request.new(api, Helpers.construct_path(@path, method_name, args))
     end
   end
 end

@@ -21,12 +21,12 @@ module Crib
       self.class._api
     end
 
-    # @return [Sawyer::Response] most recent Sawyer response
+    # @return [Sawyer::Response, nil] most recent response, if any
     def last_response
       api._last_response
     end
 
-    # Defines an API for the class
+    # Defines an API for the Class
     #
     # @param endpoint [String] API endpoint
     # @param sawyer_options [Hash] options for Sawyer

@@ -1,13 +1,18 @@
 module Crib
   # Defines an explorable REST API
+  #
+  # @example Define the GitHub API with a HTTP header
+  #   Crib::API.new('https://api.github.com') do |c|
+  #     c.headers[:user_agent] = 'crib'
+  #   end
   class API
-    # Returns instance of Sawyer::Agent
+    # @return [Sawyer::Agent] request handler
     attr_reader :_agent
 
-    # Returns latest Sawyer::Response
+    # @return [Sawyer::Response, nil] most recent response, if any
     attr_accessor :_last_response
 
-    # Defines an API
+    # Defines an API by constructing a request handler
     #
     # @param endpoint [String] API endpoint
     # @param sawyer_options [Hash] options for Sawyer
@@ -23,7 +28,7 @@ module Crib
     private
 
     def method_missing(method_name, *args)
-      Request.new(self, Helpers.construct_uri(method_name, args))
+      Request.new(self, Helpers.construct_path(method_name, args))
     end
   end
 end
