@@ -26,11 +26,11 @@ class GitHub < Crib::Resource
   end
 
   action :user do |user|
-    api.users(user)._get
+    get api.users(user)
   end
 
   action :issues do |repo, options = {}|
-    api.repos(*repo.split('/')).issues._get(options)
+    get api.repos(*repo.split('/')).issues, options
   end
 end
 
@@ -132,7 +132,7 @@ class Dribbble < Crib::Resource
   # ...
 
   action :user do
-    api.user._get # currently authenticated user
+    get api.user # currently authenticated user
   end
 end
 ```
@@ -171,14 +171,18 @@ me.rels[:followers].href
 
 *Note:* URL fields are culled into a separate `.rels` collection for easier [Hypermedia](#hypermedia-agent) support.
 
-Consuming requests is similar when using the DSL. You define *actions* which have a name and a block. They are then created as instance methods of the class that inherited `Crib::Resource`. When creating actions you should keep in mind ways in which you can shorten the HTTP path-like syntax as much as possible. A great example of this can be presented using this example (*taken from one of the above examples*):
+Consuming requests is similar when using the DSL. You define *actions* which have a name and a block. They are then created as instance methods of the class that inherited `Crib::Resource`. The return value of the block you pass to `.action` is the return value of the method it defines, most likely a `Sawyer::Response`.
+
+In order to keep your DSL code as clean as possible, Crib provides HTTP verb methods so that you don't have to call `#_get`, `#_post`, etc. every single time you define an action and want to request a resource. The DSL methods include: `.get`, `.post`, `.put`, `.patch`, `.delete`, and `.head`. They take a `Crib::Request` object and an optional *options* Hash (just like the verb methods prefixed with an underscore).
+
+A great example of all this can be presented using this example:
 
 ```ruby
 class GitHub < Crib::Resource
   # ...
 
   action :issues do |repo, options = {}|
-    api.repos(*repo.split('/')).issues._get(options)
+    get api.repos(*repo.split('/')).issues, options
   end
 end
 

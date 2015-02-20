@@ -52,5 +52,62 @@ module Crib
       send(:define_method, method, &block)
       self
     end
+
+    # Makes a HTTP GET request
+    #
+    # @param request [Crib::Request] defined API request
+    # @param options [Hash] query and header params for request
+    # @return [Sawyer::Resource]
+    def get(request, options = {})
+      request.send(:_get, options)
+    end
+
+    # Makes a HTTP POST request
+    #
+    # @param request [Crib::Request] defined API request
+    # @param data [Object] body for request
+    # @param options [Hash] header params for request
+    # @return [Sawyer::Resource]
+    def post(request, data = nil, options = {})
+      request.send(:_post, data, options)
+    end
+
+    # Makes a HTTP PUT request
+    #
+    # @param request [Crib::Request] defined API request
+    # @param data [Object] body for request
+    # @param options [Hash] header params for request
+    # @return [Sawyer::Resource]
+    def put(request, data = nil, options = {})
+      request.send(:_put, data, options)
+    end
+
+    # Makes a HTTP PATCH request
+    #
+    # @param request [Crib::Request] defined API request
+    # @param data [Object] body for request
+    # @param options [Hash] header params for request
+    # @return [Sawyer::Resource]
+    def patch(request, data = nil, options = {})
+      request.send(:_patch, data, options)
+    end
+
+    # Makes a HTTP DELETE request
+    #
+    # @param request [Crib::Request] defined API request
+    # @param options [Hash] query and header params for request
+    # @return [Sawyer::Resource]
+    def delete(request, options = {})
+      request.send(:_delete, options)
+    end
+
+    # Makes a HTTP HEAD request
+    #
+    # @param request [Crib::Request] defined API request
+    # @param options [Hash] query and header params for request
+    # @return [Sawyer::Resource]
+    def head(request, options = {})
+      request.send(:_head, options)
+    end
   end
 end
