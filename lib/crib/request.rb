@@ -9,7 +9,8 @@ module Crib
     # @param api [Crib::API] API definition
     # @param path [String] REST path
     def initialize(api, path = '')
-      @api, @path = api, path
+      @api  = api
+      @path = path
     end
 
     # Makes a HTTP GET request
@@ -81,13 +82,12 @@ module Crib
     end
 
     def parse_query_and_convenience_headers(options)
-      headers = options.fetch(:headers, {})
+      headers = options.fetch(:headers) { {} }
       CONVENIENCE_HEADERS.each do |h|
-        if header = options.delete(h)
-          headers[h] = header
-        end
+        headers[h] = options.delete(h) if options[h]
       end
-      query, opts = options.delete(:query), { query: options }
+      query = options.delete(:query)
+      opts  = { query: options }
       opts[:query].merge!(query) if query && query.is_a?(Hash)
       opts[:headers] = headers unless headers.empty?
 
